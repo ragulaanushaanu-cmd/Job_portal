@@ -257,6 +257,7 @@ The backend separates HTTP/API responsibilities from business logic through rout
 * pytest
 * FastAPI TestClient
 * SQLite-based isolated test database
+* GitHub Actions
 
 ---
 
@@ -319,6 +320,7 @@ job_portal/
 │   └── user_service.py
 │
 ├── tests/
+│   ├── __init__.py
 │   ├── conftest.py
 │   ├── test_application.py
 │   ├── test_ats.py
@@ -333,8 +335,10 @@ job_portal/
 │   ├── test_resume.py
 │   └── test_saved_job.py
 │
+├── .dockerignore
 ├── .env.example
 ├── .gitignore
+├── Dockerfile
 ├── alembic.ini
 ├── auth.py
 ├── database.py
@@ -567,9 +571,67 @@ The project currently has:
 * Resume parsing
 * ATS resume-to-job analysis
 * 178 automated tests
+* GitHub Actions CI
+* Docker backend packaging
 * GitHub repository
 
-Additional CI/CD, containerization, production deployment, and hosting configuration are planned as part of the production delivery phase.
+Production deployment, hosting configuration, structured production logging, monitoring, and further security hardening remain part of the production delivery phase.
+
+---
+
+## Docker
+
+The backend can be containerized and run using Docker.
+
+### Docker image
+
+Build the backend image from the project root:
+
+```bash
+docker build -t job-portal-backend .
+```
+
+### Run the container
+
+For local Docker smoke testing, the backend can be run with a temporary SQLite database:
+
+```powershell
+docker run --name job-portal-backend-test `
+  -p 8000:8000 `
+  -e DATABASE_URL=sqlite:///./docker_test.db `
+  -e SECRET_KEY=docker-test-only-secret `
+  -e ALGORITHM=HS256 `
+  -e ACCESS_TOKEN_EXPIRE_MINUTES=30 `
+  job-portal-backend
+```
+
+The application is available at:
+
+```text
+http://localhost:8000
+```
+
+Health check:
+
+```text
+http://localhost:8000/health
+```
+
+Swagger documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+The Docker image uses environment variables for runtime configuration, allowing the same image to be used with different database and application settings across environments.
+
+The Docker setup has been validated through:
+
+* Successful Docker image build
+* Successful container startup
+* Successful FastAPI application startup
+* Successful health check
+* Successful database connectivity
 
 ---
 
@@ -577,8 +639,6 @@ Additional CI/CD, containerization, production deployment, and hosting configura
 
 Planned production improvements include:
 
-* Continuous integration with GitHub Actions
-* Docker-based deployment
 * Production frontend and backend hosting
 * Production CORS configuration
 * Structured production logging
@@ -594,4 +654,4 @@ Planned production improvements include:
 
 GitHub:
 
-https://github.com/ragulaanushaanu-cmd
+https://github.com/ragulaanusha-cmd
