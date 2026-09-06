@@ -2,12 +2,13 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from fastapi import  FastAPI
+from fastapi import  FastAPI, status
+from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import session
+
 
 from database import SessionLocal
 from exceptions import (
@@ -134,10 +135,13 @@ def health_check():
     except SQLAlchemyError:
         logger.exception("Health check database failure")
 
-        return {
-            "status": "unhealthy",
-            "database": "unavailable",
-        }
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "unhealthy",
+                "database": "unavailable",
+            },
+        )
 
 
 # ============================================================
