@@ -16,6 +16,14 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not configured")
 
+# Railway's MySQL_URL uses the generic mysql:// scheme.
+# Convert it to the PyMySQL dialect used by this project.
+if DATABASE_URL.startswith("mysql://"):
+    DATABASE_URL = (
+        "mysql+pymysql://"
+        + DATABASE_URL[len("mysql://"):]
+    )
+
 
 # ============================================================
 # DATABASE ENGINE
