@@ -1,0 +1,91 @@
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environment
+# =========================
+
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Environment / secrets
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Pytest / coverage
+# =========================
+
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# =========================
+# Test databases
+# =========================
+*.db
+test_job_portal.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# IDE / editor
+# =========================
+
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+
+*.log
+error.txt
+
+# =========================
+# Node / React
+# =========================
+
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+
+# =========================
+# Frontend environment files
+# =========================
+
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# =========================
+# Temporary files
+# =========================
+
+*.tmp
+*.temp
+*.bak
+
+# User uploads
+uploads/
