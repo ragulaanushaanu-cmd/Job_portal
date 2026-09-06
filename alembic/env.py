@@ -8,6 +8,7 @@ from sqlalchemy import pool
 from alembic import context
 from dotenv import load_dotenv
 
+
 # Add project root to Python path
 sys.path.append(
     os.path.dirname(
@@ -17,35 +18,42 @@ sys.path.append(
     )
 )
 
+
 # Load .env
 load_dotenv()
+
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not configured")
 
-from database import Base
+
+# Railway's MySQL_URL uses the generic mysql:// scheme.
+# Convert it to the PyMySQL dialect used by this project.
+if DATABASE_URL.startswith("mysql://"):
+    DATABASE_URL = (
+        "mysql+pymysql://"
+        + DATABASE_URL[len("mysql://"):]
+    )
+
+
 import models
 
-# this is the Alembic Config object, which provides
+
+# This is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
+
 # Interpret the config file for Python logging.
-# This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+
+# Add your model's MetaData object here
+# for 'autogenerate' support.
 target_metadata = models.Base.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
