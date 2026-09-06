@@ -15,6 +15,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: sqlite:///./test_job_portal_ci.db
+      SECRET_KEY: ci-only-test-secret-key
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
