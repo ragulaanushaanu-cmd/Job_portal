@@ -15,7 +15,10 @@ import models
 # CONFIGURATION
 # =========================
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = os.getenv(
+    "UPLOAD_DIR",
+    "uploads"
+)
 
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 
@@ -81,6 +84,49 @@ def validate_file_signature(
                         status_code=400,
                         detail="Invalid DOCX file"
                     )
+
+                # Protect against ZIP bombs / suspicious archives.
+                MAX_ZIP_MEMBERS = 1000
+                MAX_UNCOMPRESSED_SIZE = 20 * 1024 * 1024  # 20 MB
+
+                members = zip_file.infolist()
+
+                if len(members) > MAX_ZIP_MEMBERS:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="DOCX archive contains too many files"
+                    )
+
+                total_uncompressed_size = sum(
+                    member.file_size
+                    for member in members
+                )
+
+                if total_uncompressed_size > MAX_UNCOMPRESSED_SIZE:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="DOCX archive is too large"
+                    )
+
+                for member in members:
+
+                    if member.compress_size == 0:
+                        if member.file_size > 0:
+                            raise HTTPException(
+                                status_code=400,
+                                detail="Invalid DOCX archive"
+                            )
+                        continue
+
+                    compression_ratio = (
+                        member.file_size / member.compress_size
+                    )
+
+                    if compression_ratio > 100:
+                        raise HTTPException(
+                            status_code=400,
+                            detail="Suspicious DOCX archive"
+                        )
 
         except zipfile.BadZipFile:
             raise HTTPException(
@@ -498,6 +544,11 @@ def delete_resume(
     return {
         "message": "Resume deleted successfully"
     }
+
+
+# =========================
+# PARSE RESUME
+# =========================
 
 def parse_resume(
     db: Session,
