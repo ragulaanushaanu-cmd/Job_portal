@@ -61,6 +61,28 @@ https://jobportal-production-4e27.up.railway.app/health
 
 ---
 
+---
+
+## Screenshots
+
+### Candidate Dashboard
+
+![Candidate Dashboard](screenshots/candidate-dashboard.png)
+
+### Jobs
+
+![Jobs](screenshots/jobs.png)
+
+### ATS Resume Analysis
+
+![ATS Analysis](screenshots/ats-analysis.png)
+
+### Employer Dashboard
+
+![Employer Dashboard](screenshots/employer-dashboard.png)
+
+---
+
 ## Key Features
 
 ### Authentication & Authorization
