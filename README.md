@@ -1,8 +1,8 @@
 # Job Portal
 
-A full-stack job portal built with **FastAPI, React, MySQL, SQLAlchemy, JWT authentication, role-based access control, resume parsing, and an ATS resume-to-job matching system**.
+A full-stack job portal built with **FastAPI, React, MySQL, SQLAlchemy, JWT authentication, role-based access control, resume parsing, and ATS resume-to-job matching**.
 
-The project is designed as a production-oriented portfolio application demonstrating backend architecture, database design, authentication and authorization, API development, automated testing, and practical ATS logic.
+The project is designed as a production-oriented portfolio application demonstrating backend architecture, database design, authentication and authorization, API development, automated testing, deployment, and practical ATS logic.
 
 ---
 
@@ -10,116 +10,157 @@ The project is designed as a production-oriented portfolio application demonstra
 
 The Job Portal connects candidates and employers through a single full-stack platform.
 
-### Candidate workflow
+### Candidate Workflow
 
 Candidates can:
 
-* Register and authenticate securely
-* Maintain their candidate profile
-* Browse and search available jobs
-* Filter jobs by relevant criteria
-* Save jobs for later
-* Upload and manage resumes
-* Set a primary resume
-* Apply for jobs
-* Track application status and history
-* Analyze a resume against a job using the ATS system
+- Register and authenticate securely
+- Manage their candidate profile
+- Browse and search jobs
+- Filter and sort jobs
+- Save jobs for later
+- Upload and manage resumes
+- Set a primary resume
+- Parse resumes into structured data
+- Apply for jobs
+- Track application status and history
+- Analyze resumes against jobs using the ATS system
 
-### Employer workflow
+### Employer Workflow
 
 Employers can:
 
-* Authenticate through the same platform
-* Create and manage companies
-* Create, edit, and delete their jobs
-* View applications submitted to their jobs
-* Update application statuses
-* View employer dashboard information
-* Manage company and job information
+- Authenticate through the platform
+- Create and manage companies
+- Create, edit, and delete jobs
+- View applications submitted to their jobs
+- Update application statuses
+- View application history
+- Manage company and job information
+- View employer dashboard statistics
 
 ---
 
-## Key Features
+## Live Application
 
-### Authentication & Authorization
+### Frontend
 
-* JWT-based authentication
-* Password hashing with bcrypt
-* Role-based access control
-* Candidate, Employer, and Admin roles
-* Protected API endpoints using FastAPI dependencies
-* Ownership checks for user-specific resources
+https://acceptable-beauty-production-29df.up.railway.app
 
-### Job Management
+### Backend API
 
-* Job creation and management
-* Search and filtering
-* Location filtering
-* Salary information
-* Employment type
-* Experience level
-* Work mode
-* Pagination
-* Sorting
-* Employer ownership validation
+https://jobportal-production-4e27.up.railway.app
 
-### Resume Management
+### Swagger Documentation
 
-* Resume upload
-* Resume listing
-* Resume download
-* Primary resume selection
-* Resume deletion
-* Resume parsing
-* Parser version tracking
-* Structured parsed resume data
+https://jobportal-production-4e27.up.railway.app/docs
 
-### Applications
+### Health Check
 
-* Candidate job applications
-* Resume selection during application
-* Application status tracking
-* Application status history
-* Candidate access control
-* Employer access control
-* Protection against duplicate applications
+https://jobportal-production-4e27.up.railway.app/health
 
-### Candidate Profile
+---
 
-* Candidate headline
-* Bio
-* Phone and location
-* Experience
-* Education
-* Skills
-* LinkedIn
-* GitHub
-* Portfolio
+# Key Features
 
-### Saved Jobs
+## Authentication & Authorization
 
-* Save jobs
-* List saved jobs
-* Remove saved jobs
-* Duplicate-save protection
+- JWT-based authentication
+- Password hashing with bcrypt
+- Candidate, Employer, and Admin roles
+- Role-based access control
+- Protected FastAPI endpoints
+- Ownership validation for user-specific resources
+- Environment-based configuration
 
-### Dashboards
+## Job Management
 
-Candidate dashboard includes application-related information and saved-job data.
+- Job creation and management
+- Job search
+- Location filtering
+- Salary information
+- Employment type
+- Experience level
+- Work mode
+- Pagination
+- Sorting
+- Employer ownership validation
 
-Employer dashboard includes:
+## Resume Management
 
-* Owned companies
-* Job totals
-* Application statistics
-* Recent applications
-* Application status breakdown
+- PDF and DOCX upload
+- File type and signature validation
+- File size validation
+- Secure stored filenames
+- Resume listing
+- Resume download
+- Primary resume selection
+- Resume deletion
+- Resume parsing
+- Parser version tracking
+- Structured resume data
+- Persistent resume storage using Railway Volume
+
+## Applications
+
+- Candidate job applications
+- Resume selection during application
+- Duplicate application protection
+- Application status tracking
+- Application status history
+- Candidate access control
+- Employer access control
+
+## Candidate Profile
+
+- Headline
+- Bio
+- Phone
+- Location
+- Experience
+- Education
+- Skills
+- LinkedIn
+- GitHub
+- Portfolio
+
+## Saved Jobs
+
+- Save jobs
+- List saved jobs
+- Remove saved jobs
+- Duplicate-save protection
+
+## Dashboards
+
+### Candidate Dashboard
+
+Includes:
+
+- Resume count
+- Application count
+- Saved job count
+- Primary resume
+- Application status breakdown
+- Recent applications
+
+### Employer Dashboard
+
+Includes:
+
+- Owned companies
+- Total jobs
+- Total applications
+- Shortlisted applications
+- Selected applications
+- Application status breakdown
+- Recent applications
 
 ---
 
 # ATS Resume Matching System
 
-One of the main features of this project is the ATS-style resume analysis system.
+One of the main features of this project is an ATS-style resume analysis system.
 
 The system compares structured resume information against a target job and produces a weighted compatibility score.
 
@@ -147,59 +188,50 @@ Weighted ATS Score
 Matched / Missing Skills & Keywords
       ↓
 Recommendations
-```
 
-## ATS Scoring
+ATS Scoring
+Component	Weight
+Skills	40%
+Keywords	25%
+Experience	20%
+Education	15%
 
-The current scoring model uses:
+The ATS result includes:
 
-| Component  | Weight |
-| ---------- | -----: |
-| Skills     |    40% |
-| Keywords   |    25% |
-| Experience |    20% |
-| Education  |    15% |
-
-The final result includes:
-
-* Overall ATS score
-* Skill score
-* Keyword score
-* Experience score
-* Education score
-* Matched skills
-* Missing skills
-* Matched keywords
-* Missing keywords
-* Recommendations
-
-### ATS engineering details
+Overall ATS score
+Skill score
+Keyword score
+Experience score
+Education score
+Matched skills
+Missing skills
+Matched keywords
+Missing keywords
+Recommendations
+ATS Engineering Details
 
 The ATS implementation includes:
 
-* Skill canonicalization and alias handling
-* Phrase-aware matching
-* Singular/plural keyword normalization
-* Meaningful keyword filtering
-* Generic keyword rejection
-* Technical-skill exclusion from ordinary keyword extraction
-* Education hierarchy handling
-* Education field/specialization matching
-* Required experience extraction
-* Project relevance based on ATS keywords
-* Duplicate canonical keyword protection
-* Recommendation generation based on detected gaps
-* Parser-version readiness validation
-* Resume ownership validation
-* Unique resume/job ATS analysis handling
+Skill canonicalization
+Skill alias handling
+Phrase-aware matching
+Singular/plural normalization
+Meaningful keyword filtering
+Generic keyword rejection
+Technical skill exclusion from ordinary keyword extraction
+Education hierarchy matching
+Education field/specialization matching
+Required experience extraction
+Project relevance based on ATS keywords
+Canonical keyword deduplication
+Recommendation generation from detected gaps
+Parser-version readiness validation
+Resume ownership validation
+Unique resume/job ATS analysis handling
+Architecture
 
----
+The application follows a layered backend architecture:
 
-# Architecture
-
-The application follows a layered backend architecture.
-
-```text
 React Frontend
       ↓
 FastAPI Routers
@@ -209,11 +241,9 @@ Service Layer
 SQLAlchemy ORM
       ↓
 MySQL Database
-```
 
 Cross-cutting concerns include:
 
-```text
 Authentication
 Authorization / RBAC
 Validation
@@ -222,49 +252,41 @@ Database Transactions
 File Handling
 Pagination
 Logging
-```
 
-The backend separates HTTP/API responsibilities from business logic through routers and services.
+The backend separates HTTP/API responsibilities from business logic through routers and service modules.
 
----
-
-# Technology Stack
-
-## Backend
-
-* Python
-* FastAPI
-* Pydantic
-* SQLAlchemy
-* MySQL
-* PyMySQL
-* Alembic
-* python-jose
-* Passlib / bcrypt
-* python-dotenv
-* Uvicorn
-
-## Frontend
-
-* React
-* Vite
-* Axios
-* JavaScript
-* React Router
-
-## Testing
-
-* pytest
-* FastAPI TestClient
-* SQLite-based isolated test database
-* GitHub Actions
-
----
-
-# Project Structure
-
-```text
-job_portal/
+Technology Stack
+Backend
+Python
+FastAPI
+Pydantic
+SQLAlchemy
+MySQL
+PyMySQL
+Alembic
+python-jose
+Passlib / bcrypt
+python-dotenv
+Uvicorn
+Frontend
+React
+Vite
+Axios
+JavaScript
+React Router
+Testing
+pytest
+FastAPI TestClient
+SQLite-based isolated test database
+GitHub Actions
+Deployment
+Railway
+Railway MySQL
+Railway Volume
+Docker
+GitHub Actions CI
+Project Structure
+Job_portal/
 │
 ├── alembic/
 │   ├── versions/
@@ -348,17 +370,11 @@ job_portal/
 ├── models.py
 ├── requirements.txt
 └── schemas.py
-```
+Database Design
 
----
+The application uses MySQL with SQLAlchemy ORM and Alembic.
 
-# Database Design
-
-The application uses MySQL with SQLAlchemy ORM and Alembic migrations.
-
-Major entities include:
-
-```text
+Major Entities
 User
 CandidateProfile
 Company
@@ -369,289 +385,326 @@ ApplicationStatusHistory
 Resume
 ResumeParsingResult
 ATSAnalysis
-```
+Integrity Rules
+Unique user email
+Unique saved job per user/job
+Unique application per user/job
+Unique stored resume filename
+One parsing result per resume
+One ATS analysis per resume/job pair
+Company ownership enforcement
+Foreign-key relationships with appropriate delete behavior
+API Documentation
 
-Important integrity rules include:
+The complete API is available through Swagger:
 
-* Unique user email
-* Unique saved job per user/job
-* Unique application per user/job
-* Unique stored resume filename
-* One parsing result per resume
-* One ATS analysis per resume/job pair
-* Company ownership enforcement
-* Foreign-key relationships with appropriate delete behavior
+https://jobportal-production-4e27.up.railway.app/docs
 
----
+The API includes endpoints for:
 
-# API Documentation
-
-When running locally, FastAPI provides interactive API documentation at:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-OpenAPI specification:
-
-```text
-http://127.0.0.1:8000/openapi.json
-```
-
----
-
-# Local Setup
-
-## 1. Clone the repository
-
-```bash
+Authentication
+Users
+Companies
+Jobs
+Applications
+Saved jobs
+Candidate profiles
+Resumes
+Candidate dashboard
+Employer dashboard
+ATS analysis
+Local Setup
+1. Clone the Repository
 git clone https://github.com/ragulaanushaanu-cmd/Job_portal.git
 cd Job_portal
-```
-
-## 2. Create and activate a virtual environment
-
-### Windows
-
-```powershell
+2. Create a Virtual Environment
+Windows
 python -m venv venv
 venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
+Linux / macOS
 python3 -m venv venv
 source venv/bin/activate
-```
-
-## 3. Install backend dependencies
-
-```bash
+3. Install Backend Dependencies
 pip install -r requirements.txt
-```
-
-## 4. Configure environment variables
+4. Configure Environment Variables
 
 Copy:
 
-```text
 .env.example
-```
 
 to:
 
-```text
 .env
-```
-
-Then configure the local values.
 
 Example:
 
-```env
 DATABASE_URL=mysql+pymysql://root:YOUR_PASSWORD@localhost:3306/job_portal
+
 SECRET_KEY=YOUR_SECRET_KEY
+
 ALGORITHM=HS256
+
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
 
-Never commit `.env`.
+FRONTEND_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
-## 5. Start the backend
+Never commit .env.
 
-```bash
+5. Start the Backend
 uvicorn main:app --reload
-```
 
 The API will be available at:
 
-```text
 http://127.0.0.1:8000
-```
 
-## 6. Start the frontend
+Swagger:
+
+http://127.0.0.1:8000/docs
+
+Health check:
+
+http://127.0.0.1:8000/health
+6. Start the Frontend
 
 Open a second terminal:
 
-```powershell
 cd frontend
 npm install
 npm run dev
-```
 
 Vite will display the local frontend URL in the terminal.
 
----
+Database Migrations
 
-# Database Migrations
+Alembic is used to manage database schema changes.
 
-Alembic is used for schema migrations.
-
-To apply available migrations:
-
-```bash
+Apply Existing Migrations
 alembic upgrade head
-```
+Create a New Migration
 
-To create a new migration after a model change:
+After changing SQLAlchemy models:
 
-```bash
 alembic revision --autogenerate -m "describe migration"
-```
 
 Then apply it:
 
-```bash
 alembic upgrade head
-```
+Fresh Database Note
 
----
+The current migration history was developed incrementally and does not provide a complete zero-to-current bootstrap for a completely empty database.
 
-# Testing
+For a fresh deployment database, the current schema can be created from the SQLAlchemy models and Alembic can then be marked at the current revision:
 
-The project currently contains **178 automated tests** covering API behavior, authorization, dashboards, resume management, ATS functionality, and ATS service-level regression scenarios.
+python -c "import models; from database import Base, engine; Base.metadata.create_all(bind=engine); print('Database schema created successfully')"
 
-Run the complete suite with:
+Then:
 
-```powershell
+alembic stamp head
+
+Future schema changes should continue to be managed through Alembic migrations.
+
+Testing
+
+The project currently contains 178 automated tests covering API behavior, authorization, dashboards, resume management, ATS functionality, and ATS service-level regression scenarios.
+
+Run the complete test suite with:
+
 python -m pytest tests/ -v
-```
 
 Current verified result:
 
-```text
 178 passed
-```
 
-The ATS test coverage includes both:
+The ATS test coverage includes:
 
-```text
 tests/test_ats.py
     API / integration coverage
 
 tests/test_ats_service.py
-    detailed ATS service and regression coverage
-```
+    Detailed ATS service and regression coverage
 
----
+GitHub Actions runs the backend test suite automatically for changes pushed to main.
 
-# Security
+Security
 
-The project uses:
+The project includes:
 
-* JWT authentication
-* bcrypt password hashing
-* Role-based access control
-* Resource ownership validation
-* Environment-based configuration
-* Global exception handling
-* Database integrity constraints
+JWT authentication
+bcrypt password hashing
+Role-based access control
+Resource ownership validation
+Environment-based configuration
+Global exception handling
+Database integrity constraints
+Resume file signature validation
+Resume file size limits
+Secure stored filenames
+Hardened DOCX archive validation
 
-Sensitive local files such as `.env`, uploaded files, virtual environments, generated frontend files, caches, and local test databases are excluded from version control.
+Sensitive local files such as .env, uploaded files, virtual environments, generated frontend files, caches, and local test databases are excluded from version control.
 
----
+Docker
 
-# Current Status
+The backend can be containerized using Docker.
 
-The project currently has:
+Build the Image
 
-* FastAPI backend
-* React frontend
-* MySQL database integration
-* Alembic migrations
-* JWT authentication
-* Candidate / Employer / Admin roles
-* Candidate dashboard
-* Employer dashboard
-* Job management
-* Saved jobs
-* Applications and status history
-* Resume management
-* Resume parsing
-* ATS resume-to-job analysis
-* 178 automated tests
-* GitHub Actions CI
-* Docker backend packaging
-* GitHub repository
+Run from the project root:
 
-Production deployment, hosting configuration, structured production logging, monitoring, and further security hardening remain part of the production delivery phase.
-
----
-
-## Docker
-
-The backend can be containerized and run using Docker.
-
-### Docker image
-
-Build the backend image from the project root:
-
-```bash
 docker build -t job-portal-backend .
-```
+Run the Container
 
-### Run the container
+For local Docker smoke testing:
 
-For local Docker smoke testing, the backend can be run with a temporary SQLite database:
+docker run --name job-portal-backend-test -p 8000:8000 -e DATABASE_URL=sqlite:///./docker_test.db -e SECRET_KEY=docker-test-only-secret -e ALGORITHM=HS256 -e ACCESS_TOKEN_EXPIRE_MINUTES=30 job-portal-backend
 
-```powershell
-docker run --name job-portal-backend-test `
-  -p 8000:8000 `
-  -e DATABASE_URL=sqlite:///./docker_test.db `
-  -e SECRET_KEY=docker-test-only-secret `
-  -e ALGORITHM=HS256 `
-  -e ACCESS_TOKEN_EXPIRE_MINUTES=30 `
-  job-portal-backend
-```
+The application will be available at:
 
-The application is available at:
-
-```text
 http://localhost:8000
-```
 
 Health check:
 
-```text
 http://localhost:8000/health
-```
 
-Swagger documentation:
+Swagger:
 
-```text
 http://localhost:8000/docs
-```
 
-The Docker image uses environment variables for runtime configuration, allowing the same image to be used with different database and application settings across environments.
+The Docker image uses environment variables for runtime configuration, allowing the same image to be used across different environments.
 
-The Docker setup has been validated through:
+Docker Validation
 
-* Successful Docker image build
-* Successful container startup
-* Successful FastAPI application startup
-* Successful health check
-* Successful database connectivity
+The local Docker setup has been validated through:
 
----
+Successful Docker image build
+Successful container startup
+Successful FastAPI application startup
+Successful health check
+Successful database connectivity
+Production Deployment
 
-# Future Improvements
+The application is deployed on Railway with separate services for the backend and frontend.
 
-Planned production improvements include:
+GitHub Repository
+        │
+        ├── Job_portal
+        │      └── FastAPI + Docker
+        │
+        ├── MySQL
+        │
+        └── acceptable-beauty
+               └── React + Vite
+Production Components
+Frontend: React + Vite
+Backend: FastAPI
+Database: Railway MySQL
+ORM: SQLAlchemy
+Migrations: Alembic
+Authentication: JWT + bcrypt
+Authorization: Candidate / Employer / Admin RBAC
+Resume parsing: PDF/DOCX
+ATS analysis: Skill, experience, education, keyword and project matching
+Resume storage: Railway Volume mounted at /app/uploads
+CI: GitHub Actions
+Containerization: Docker
+Deployment Configuration
 
-* Production frontend and backend hosting
-* Production CORS configuration
-* Structured production logging
-* Deployment documentation
-* Additional operational monitoring
-* Further security hardening
+The backend uses Railway environment variables for:
 
----
+DATABASE_URL
+SECRET_KEY
+ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES
+FRONTEND_ORIGINS
+UPLOAD_DIR
 
-# Author
+The frontend uses:
 
-**Anusha Ragula**
+VITE_API_BASE_URL
 
-GitHub:
+The frontend service is deployed from the /frontend directory of the repository.
 
-https://github.com/ragulaanusha-cmd
+Production Verification
+
+The deployed application has been verified through end-to-end candidate and employer workflows.
+
+Candidate
+Authentication
+Candidate dashboard
+Job browsing
+Job details
+Saved jobs
+Resume upload
+Resume download
+Resume parsing
+ATS analysis
+Job application
+Application tracking
+Application status history
+Employer
+Authentication
+Employer dashboard
+Company creation
+Job creation
+Job management
+Application review
+Application status updates
+Dashboard statistics
+Cross-Role Verification
+
+The following production workflow was successfully verified:
+
+Candidate Login
+      ↓
+Browse Job
+      ↓
+Save Job
+      ↓
+Upload Resume
+      ↓
+Parse Resume
+      ↓
+ATS Analysis
+      ↓
+Apply for Job
+      ↓
+Employer Reviews Application
+      ↓
+Employer Shortlists Candidate
+      ↓
+Candidate Sees Updated Status
+      ↓
+Candidate Dashboard Updated
+      ↓
+Employer Dashboard Updated
+Current Status
+
+The Job Portal is deployed and operational on Railway.
+
+Production frontend is live
+Production backend is live
+Railway MySQL is connected
+Database schema is initialized
+Resume persistence is configured with a Railway Volume
+Candidate and Employer workflows have been verified
+ATS analysis has been verified in production
+GitHub Actions CI is passing
+Backend test suite: 178 passing
+Future Improvements
+
+Possible future improvements include:
+
+Repairing and consolidating the initial Alembic migration history so a completely empty database can be initialized with alembic upgrade head alone
+More comprehensive operational monitoring and alerting
+Additional production security hardening
+Expanded automated end-to-end testing
+Additional frontend UX and accessibility improvements
+
+**Use this entire block as your `README.md`.**
+
+One correction from the earlier version: the project structure and migration sections above are based on the structure we actually verified during deployment, rather than adding new architecture.
+
+After saving the file, run only:
+
+```powershell
+git diff --check
