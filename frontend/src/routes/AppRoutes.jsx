@@ -3,17 +3,14 @@ import { useAuth } from "../context/AuthContext";
 
 import Login from "../pages/auth/Login";
 import NotFound from "../pages/NotFound";
-import EmployerApplications from "../pages/employer/Applications";
+
+import ProtectedRoute from "./ProtectedRoute";
+import RoleRoute from "./RoleRoute";
+
+import CandidateLayout from "../layouts/CandidateLayout";
+import EmployerLayout from "../layouts/EmployerLayout";
 
 import CandidateDashboard from "../pages/candidate/Dashboard";
-
-import EmployerDashboard from "../pages/employer/Dashboard";
-import EmployerJobs from "../pages/employer/EmployerJobs";
-import JobDetails from "../pages/employer/JobDetails";
-import CreateJob from "../pages/employer/CreateJob";
-import EditJob from "../pages/employer/EditJob";
-
-import Company from "../pages/employer/Company";
 import CandidateJobs from "../pages/candidate/Jobs";
 import CandidateJobDetails from "../pages/candidate/JobDetails";
 import CandidateApply from "../pages/candidate/Apply";
@@ -22,11 +19,13 @@ import CandidateSavedJobs from "../pages/candidate/SavedJobs";
 import CandidateResumes from "../pages/candidate/Resumes";
 import CandidateProfile from "../pages/candidate/Profile";
 
-import CandidateLayout from "../layouts/CandidateLayout";
-import EmployerLayout from "../layouts/EmployerLayout";
-
-import ProtectedRoute from "./ProtectedRoute";
-import RoleRoute from "./RoleRoute";
+import EmployerDashboard from "../pages/employer/Dashboard";
+import EmployerJobs from "../pages/employer/EmployerJobs";
+import EmployerJobDetails from "../pages/employer/JobDetails";
+import EmployerApplications from "../pages/employer/Applications";
+import CreateJob from "../pages/employer/CreateJob";
+import EditJob from "../pages/employer/EditJob";
+import Company from "../pages/employer/Company";
 
 
 function DashboardRedirect() {
@@ -57,19 +56,31 @@ function DashboardRedirect() {
 function AppRoutes() {
   return (
     <Routes>
+
+      {/* Root Route */}
+      <Route
+        path="/"
+        element={<Navigate to="/dashboard" replace />}
+      />
+
+      {/* Authentication */}
       <Route
         path="/login"
         element={<Login />}
       />
 
+      {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
+
+        {/* Common Dashboard Redirect */}
         <Route
           path="/dashboard"
           element={<DashboardRedirect />}
         />
 
-        {/* Candidate Routes */}
-
+        {/* =========================
+            Candidate Routes
+        ========================== */}
         <Route
           element={
             <RoleRoute
@@ -78,43 +89,53 @@ function AppRoutes() {
           }
         >
           <Route element={<CandidateLayout />}>
+
             <Route
               path="/candidate/dashboard"
               element={<CandidateDashboard />}
             />
+
             <Route
               path="/candidate/jobs"
               element={<CandidateJobs />}
             />
+
             <Route
               path="/candidate/jobs/:jobId"
               element={<CandidateJobDetails />}
             />
+
             <Route
               path="/candidate/jobs/:jobId/apply"
               element={<CandidateApply />}
             />
+
             <Route
               path="/candidate/applications"
               element={<CandidateApplications />}
             />
+
             <Route
               path="/candidate/saved-jobs"
               element={<CandidateSavedJobs />}
             />
+
             <Route
               path="/candidate/resumes"
               element={<CandidateResumes />}
             />
+
             <Route
               path="/candidate/profile"
               element={<CandidateProfile />}
             />
+
           </Route>
         </Route>
 
-        {/* Employer Routes */}
-
+        {/* =========================
+            Employer Routes
+        ========================== */}
         <Route
           element={
             <RoleRoute
@@ -123,6 +144,7 @@ function AppRoutes() {
           }
         >
           <Route element={<EmployerLayout />}>
+
             <Route
               path="/employer/dashboard"
               element={<EmployerDashboard />}
@@ -137,30 +159,38 @@ function AppRoutes() {
               path="/employer/jobs/new"
               element={<CreateJob />}
             />
+
             <Route
               path="/employer/jobs/:jobId/edit"
               element={<EditJob />}
             />
+
             <Route
               path="/employer/jobs/:jobId"
-              element={<JobDetails />}
+              element={<EmployerJobDetails />}
             />
+
             <Route
               path="/employer/applications"
               element={<EmployerApplications />}
             />
+
             <Route
               path="/employer/company"
               element={<Company />}
             />
+
           </Route>
         </Route>
+
       </Route>
 
+      {/* Not Found */}
       <Route
         path="*"
         element={<NotFound />}
       />
+
     </Routes>
   );
 }
